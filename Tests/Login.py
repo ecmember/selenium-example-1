@@ -3,6 +3,7 @@ import time
 import unittest
 from Pages.LoginPage import LoginPage
 from Pages.HomePage import HomePage
+import HtmlTestRunner
 
 class LoginTest(unittest.TestCase):
     @classmethod
@@ -12,7 +13,7 @@ class LoginTest(unittest.TestCase):
         cls.driver.implicitly_wait(10)
         cls.driver.maximize_window()
 
-    def test_login_valid(self):
+    def test_01_login_valid(self):
         driver = self.driver
         driver.get("https://opensource-demo.orangehrmlive.com/")
 
@@ -25,6 +26,17 @@ class LoginTest(unittest.TestCase):
         homepage = HomePage(driver)
         homepage.click_welcome()
         homepage.click_logout()
+
+    def test_02_login_invalid_username(self):
+            driver = self.driver
+            driver.get("https://opensource-demo.orangehrmlive.com/")
+
+            login = LoginPage(driver)
+            login.enter_username("Admin1")
+            login.enter_password("admin123")
+            login.click_login()
+            message = self.driver.find_element_by_xpath("").text
+            self.assertEquals(message,"Invalid credentials")
 
 
 
@@ -43,5 +55,5 @@ class LoginTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-        unittest.main()
+        unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output="C:/Users/Ecem/Documents/Repositories/selenium-example-1/Reports"))
 
